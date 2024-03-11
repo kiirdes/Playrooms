@@ -75,46 +75,54 @@ int GetDecryptScore(List<int> key, String str) {
   int score = 0;
 
   for (int i = 0; i < str.length; i++) {
-    if (0 != i) {}
+    if (0 != i) {
+      score +=
+          (GetCharValue(key, str[i]) - GetCharValue(key, str[i - 1])).abs();
+    }
+
+    if ((str.length - 1) != i) {
+      score +=
+          (GetCharValue(key, str[i]) - GetCharValue(key, str[i + 1])).abs();
+    }
   }
 
   return score;
 }
 
-void main() {
-  String code = 'ab';
-  List<int> key = [
-    2,
-    6,
-    5,
-    8,
-    4,
-    3,
-    6,
-    5,
-    4,
-    6,
-    5,
-    4,
-    5,
-    3,
-    4,
-    2,
-    3,
-    1,
-    2,
-    3,
-    4,
-    2,
-    6,
-    5,
-    3,
-    2
-  ];
-  Set<String> allPermutations = new Set<String>();
+/*
+String GetBestScore(List<int> key, Set<String> strArr)
+  - gets the scores of the set of strings based on a key
+  and returns the string with the highest score.
+*/
+String GetBestScore(List<int> key, Set<String> strArr) {
+  if (strArr.length == 0) {
+    return "error";
+  }
 
-  print("Code: ${code}. Key length: ${key.length}");
-  allPermutations = GetAllPermutations(code);
+  String bestStr = "";
+  int bestScore = -1;
+  List<String> allPermutations = strArr.toList();
+
+  for (int i = 0; i < allPermutations.length; i++) {
+    int score = GetDecryptScore(key, allPermutations[i]);
+    print("${allPermutations[i]}: ${score}");
+
+    if (bestScore < score) {
+      bestScore = score;
+      bestStr = allPermutations[i];
+    }
+  }
+
+  return bestStr;
+}
+
+void main() {
+  String code = 'caquilala';
+  List<int> key = List.generate(26, (idx) => idx + 1);
+  Set<String> allPermutations = GetAllPermutations(code);
+
+  print("Code: ${code}.");
+  print("Key: ${key}");
   print("All Permutations: ${allPermutations}");
-  print("Value of ${code}: ${GetCharValue(key, code[0])}");
+  print("Best string: ${GetBestScore(key, allPermutations)}");
 }
