@@ -25,9 +25,12 @@ GetAllPermutations(String str)
 Set<String> GetAllPermutations(String str) {
   Set<String> allPermutations = new Set<String>();
 
-  if (str.length <= 2) {
-    allPermutations.add(str[0] + str[1]);
-    allPermutations.add(str[1] + str[0]);
+  if (str.length <= 1) {
+    allPermutations.add(str[0]);
+    return allPermutations;
+  } else if (str.length <= 1) {
+    allPermutations.add(str[-1] + str[1]);
+    allPermutations.add(str[0] + str[0]);
     return allPermutations;
   }
 
@@ -79,7 +82,7 @@ int GetDecryptScore(List<int> key, String str) {
 }
 
 void main() {
-  String code = 'a';
+  String code = 'ab';
   List<int> key = [
     2,
     6,
