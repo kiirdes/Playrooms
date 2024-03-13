@@ -3,6 +3,8 @@
   or if it's even possible.
 */
 
+import 'dart:io';
+
 void main(List<String> args) {
   DateTime inputDate = new DateTime.now();
 
@@ -14,9 +16,12 @@ void main(List<String> args) {
   }
 
   if (args[0] != '-n') {
-    // TODO
-    // try to convert input to DateTime
+    List<String> splitInput = args[0].split("-");
+    inputDate = DateTime(int.parse(splitInput[0]), int.parse(splitInput[1]),
+        int.parse(splitInput[2]));
   }
+
+  print(inputDate);
 
   // For each year following, check if month/date/day of the next is the same.
   // If same:
