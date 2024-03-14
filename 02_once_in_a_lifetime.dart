@@ -3,7 +3,36 @@
   or if it's even possible.
 */
 
-import 'dart:io';
+String GetDayString(int day) {
+  List<String> days = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday"
+  ];
+  return days[day - 1];
+}
+
+String GetMonthString(int month) {
+  List<String> months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+  ];
+  return months[month - 1];
+}
 
 void main(List<String> args) {
   DateTime inputDate = new DateTime.now();
@@ -22,6 +51,15 @@ void main(List<String> args) {
   }
 
   print(inputDate);
+
+  int counter = 0;
+  while (counter != 100) {
+    DateTime newDate =
+        new DateTime(inputDate.year + counter, inputDate.month, inputDate.day);
+    print(
+        "${GetDayString(newDate.weekday)}; ${GetMonthString(newDate.month)} ${newDate.day}, ${newDate.year}");
+    counter++;
+  }
 
   // For each year following, check if month/date/day of the next is the same.
   // If same:
