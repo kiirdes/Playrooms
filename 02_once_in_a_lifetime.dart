@@ -34,8 +34,23 @@ String GetMonthString(int month) {
   return months[month - 1];
 }
 
+(int, int) GetResetScore(DateTime date) {
+  return (date.year % 4, date.weekday);
+}
+
+bool HasLooped(Set<(int, int)> completed, (int, int) curr) {
+  return completed.contains(curr);
+}
+
+String GetFormattedDate(DateTime date) {
+  return "${GetDayString(date.weekday)}; ${GetMonthString(date.month)} ${date.day}, ${date.year}";
+}
+
 void main(List<String> args) {
   DateTime inputDate = new DateTime.now();
+  DateTime matchDate = new DateTime(2000);
+  Set<(int, int)> completed = Set();
+  bool hasMatch = false;
 
   if (args.length != 1) {
     print("Usage: > run [date] [-n]");
@@ -50,28 +65,30 @@ void main(List<String> args) {
         int.parse(splitInput[2]));
   }
 
-  print(inputDate);
+  print("You input: ${GetFormattedDate(inputDate)}.\n");
 
-  int counter = 0;
+  int counter = 1;
   while (counter != 100) {
     DateTime newDate =
         new DateTime(inputDate.year + counter, inputDate.month, inputDate.day);
-    print(
-        "${GetDayString(newDate.weekday)}; ${GetMonthString(newDate.month)} ${newDate.day}, ${newDate.year}");
+
+    (int, int) curr = GetResetScore(inputDate);
+    if (newDate.weekday == inputDate.weekday) {
+      hasMatch = true;
+      matchDate = newDate;
+      break;
+    }
+
+    if (HasLooped(completed, curr)) break;
     counter++;
   }
 
-  // For each year following, check if month/date/day of the next is the same.
-  // If same:
-  //  return it.
-  //  -- End of program. --
-  // Else:
-  //  check all past records if they have the same:
-  //    day of the week; and
-  //    years until the next leap year (ex. 2025 = 1; 2028 = 0);
-  //  if there's a match
-  //    return no other year
-  //  -- End of Program. --
-  //  else:
-  //    loop again.
+  if (hasMatch) {
+    print("It's a match!");
+    print("${GetFormattedDate(inputDate)}");
+    print("${GetFormattedDate(matchDate)}");
+  } else {
+    print("No matches for ${GetFormattedDate(inputDate)}.");
+    print("That day is one of a kind!");
+  }
 }
